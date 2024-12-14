@@ -1,5 +1,4 @@
 <?php
-
 class Question {
     public string $text;
     public string $correctAnswer;
@@ -60,7 +59,6 @@ function displayResults(int $score, int $total): void {
     echo "Quiz Complete!\n";
     echo "Your Score: {$score}/{$total} ({$percentage}%)\n\n";
     
-
     if ($percentage >= 90) {
         echo "Excellent work! Outstanding performance!\n";
     } elseif ($percentage >= 70) {
@@ -72,16 +70,13 @@ function displayResults(int $score, int $total): void {
     }
 }
 
-
 $quizQuestions = [
     new Question("What is the capital of France?", "paris"),
     new Question("Which planet is known as the Red Planet?", "mars"),
     new Question("What is 2 + 2?", "4")
 ];
 
-
 $userAnswers = runQuiz($quizQuestions);
-
 
 try {
     $score = evaluateQuiz($quizQuestions, $userAnswers);
@@ -90,4 +85,52 @@ try {
     echo "Error: " . $e->getMessage() . "\n";
 }
 
+// Second 
+$questions = [
+    ['question' => 'What is 2 + 2?', 'correct' => '4'],
+    ['question' => 'What is the capital of France?', 'correct' => 'Paris'],
+    ['question' => 'Who wrote "Hamlet"?', 'correct' => 'Shakespeare'],
+];
+
+
+function collectAnswers($questions) {
+    $answers = [];
+    foreach ($questions as $index => $question) {
+        echo ($index + 1) . ". " . $question['question'] . "\n";
+        echo "Your answer: ";
+        $answers[] = trim(readline());
+    }
+    return $answers;
+}
+
+
+function assessQuiz($questions, $answers) {  
+    $score = 0;
+    foreach ($questions as $index => $question) {
+        if (strtolower($answers[$index]) === strtolower($question['correct'])) {
+            $score++;
+        }
+    }
+    return $score;
+}
+
+
+function provideFeedback($score, $total) {
+    echo "You scored $score out of $total.\n";
+    
+    if ($score === $total) {
+        echo "Excellent job!\n";
+    } elseif ($score > $total / 2) {
+        echo "Good effort!\n";
+    } else {
+        echo "Better luck next time!\n";
+    }
+}
+
+$answers = collectAnswers($questions);
+$score = assessQuiz($questions, $answers);  
+provideFeedback($score, count($questions));
+
 ?>
+
+
